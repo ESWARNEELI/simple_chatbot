@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-box {
+      width: 400px;
+      background: #020617;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .user {
+      text-align: right;
+      color: #38bdf8;
+      margin: 5px 0;
+    }
+
+    .bot {
+      text-align: left;
+      color: #a7f3d0;
+      margin: 5px 0;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      margin-top: 5px;
+      padding: 10px;
+      background: #38bdf8;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-box">
+    <div class="messages" id="messages"></div>
+
+    <input type="text" id="prompt" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("prompt");
+      const messages = document.getElementById("messages");
+
+      const userText = input.value;
+      if (!userText) return;
+
+      messages.innerHTML += `<div class="user">${userText}</div>`;
+      input.value = "";
+
+      const response = await fetch("http://127.0.0.1:5000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ prompt: userText })
+      });
+
+      const data = await response.json();
+      messages.innerHTML += `<div class="bot">${data.response}</div>`;
+
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>
