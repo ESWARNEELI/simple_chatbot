@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-client = genai.Client(api_key="AIzaSyBpKfXQ5S2ccN3wRJDoTAK_qHc0drt5E3A")
+client = genai.Client(api_key="REMOVED A")
 
 @app.route("/")
 def home():
